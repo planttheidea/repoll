@@ -34,6 +34,16 @@ const isNumber = (object) => {
 };
 
 /**
+ * determine whether object passed is null
+ *
+ * @param {*} object
+ * @returns {boolean}
+ */
+const isNull = (object) => {
+  return object === null;
+};
+
+/**
  * determine whether object passed is an object
  *
  * @param {*} object
@@ -54,6 +64,7 @@ const isReactComponent = (object) => {
 };
 
 export {isFunction};
+export {isNull};
 export {isNumber};
 export {isObject};
 export {isReactComponent};

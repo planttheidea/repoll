@@ -121,6 +121,10 @@ var Repoll =
 	  };
 	
 	  intervalMetadata.start = function () {
+	    if (!(0, _is.isNull)(intervalMap[key].interval)) {
+	      intervalMap[key].stop();
+	    }
+	
 	    intervalMetadata.interval = setInterval(function () {
 	      fn(intervalMetadata, intervalMap);
 	    }, timeInMs);
@@ -265,7 +269,7 @@ var Repoll =
 	'use strict';
 	
 	exports.__esModule = true;
-	exports.isReactComponent = exports.isObject = exports.isNumber = exports.isFunction = undefined;
+	exports.isReactComponent = exports.isObject = exports.isNumber = exports.isNull = exports.isFunction = undefined;
 	
 	var _react = __webpack_require__(2);
 	
@@ -301,6 +305,16 @@ var Repoll =
 	};
 	
 	/**
+	 * determine whether object passed is null
+	 *
+	 * @param {*} object
+	 * @returns {boolean}
+	 */
+	var isNull = function isNull(object) {
+	  return object === null;
+	};
+	
+	/**
 	 * determine whether object passed is an object
 	 *
 	 * @param {*} object
@@ -321,6 +335,7 @@ var Repoll =
 	};
 	
 	exports.isFunction = isFunction;
+	exports.isNull = isNull;
 	exports.isNumber = isNumber;
 	exports.isObject = isObject;
 	exports.isReactComponent = isReactComponent;

@@ -4,6 +4,7 @@ import React from 'react';
 // object class checkers
 import {
   isFunction,
+  isNull,
   isNumber,
   isObject,
   isReactComponent
@@ -54,8 +55,12 @@ const setRepollIntervalData = (intervalMap, key, timeInMs, fn) => {
   };
 
   intervalMetadata.start = () => {
+    if (!isNull(intervalMap[key].interval)) {
+      intervalMap[key].stop();
+    }
+
     intervalMetadata.interval = setInterval(() => {
-      fn(intervalMetadata, intervalMap);
+      fn(intervalMetadata);
     }, timeInMs);
   };
 

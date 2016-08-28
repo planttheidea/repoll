@@ -39,8 +39,6 @@ class App extends Component {
         restartInterval(interval);
       }, 2000);
     }
-
-    console.log(this.repollIntervals);
   };
 
   render() {
