@@ -25,10 +25,6 @@ import React, {
 
 import repoll from 'repoll';
 
-const pollingFunctions = {
-  foo: 5000
-};
-
 @repoll({foo: 5000})
 class PollingFoo extends Component {
   state = {
