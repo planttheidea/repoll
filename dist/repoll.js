@@ -140,7 +140,8 @@ var Repoll =
 	};
 	
 	var DEFAULT_OPTIONS = {
-	  autoStart: false
+	  autoStart: true,
+	  stopOnUnmount: true
 	};
 	
 	/**
@@ -214,7 +215,7 @@ var Repoll =
 	      }
 	
 	      RepollComponent.prototype.componentWillUnmount = function componentWillUnmount() {
-	        if ((0, _is.isFunction)(_ReactClass.prototype.componentWillUnmount)) {
+	        if (coalescedOptions.stopOnUnmount && (0, _is.isFunction)(_ReactClass.prototype.componentWillUnmount)) {
 	          _ReactClass.prototype.componentWillUnmount.call(this);
 	        }
 	

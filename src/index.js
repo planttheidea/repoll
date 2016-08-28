@@ -73,7 +73,8 @@ const returnSameClass = (ReactClass) => {
 };
 
 const DEFAULT_OPTIONS = {
-  autoStart: false
+  autoStart: true,
+  stopOnUnmount: true
 };
 
 /**
@@ -138,7 +139,7 @@ const repoll = (functionMap, options = {}) => {
       }
 
       componentWillUnmount() {
-        if (isFunction(super.componentWillUnmount)) {
+        if (coalescedOptions.stopOnUnmount && isFunction(super.componentWillUnmount)) {
           super.componentWillUnmount();
         }
 
