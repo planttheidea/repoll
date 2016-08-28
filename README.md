@@ -181,7 +181,7 @@ class MyComponent extends Component {
   };
   
   onClickButton = () => {
-    this.repollingIntervals.foo.start();
+    this.repollIntervals.foo.start();
   };
   
   render() {
