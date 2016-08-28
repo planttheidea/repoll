@@ -223,10 +223,6 @@ class MyComponent extends Component {
 }
 ```
 
-#### Advanced usage
-
-There are a number of ways you can work with this polling information, but it all un
-
 ### Development
 
 Standard stuff, clone the repo and `npm i` to get the dependencies. npm scripts available:
