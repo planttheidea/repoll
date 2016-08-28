@@ -85,7 +85,7 @@ test('if repoll with invalid arguments throws error', (t) => {
   consoleStub.restore();
 });
 
-test('if repoll with one argument creates intervals but does not start them', async (t) => {
+test('if repoll with one argument creates intervals and starts them', async (t) => {
   const fn = 'stub';
   const fnInterval = 500;
   const repollIntervals = {
@@ -126,7 +126,7 @@ test('if repoll with one argument creates intervals but does not start them', as
   wrapper.unmount();
 });
 
-test('if repoll with two arguments creates intervals and starts them', async (t) => {
+test('if repoll with two arguments creates intervals but does not start them', async (t) => {
   const fn = 'stub';
   const fnInterval = 500;
   const repollIntervals = {
@@ -166,19 +166,51 @@ test('if repoll with two arguments creates intervals and starts them', async (t)
   wrapper.unmount();
 });
 
-test('that repoll does not continue firing after unmount', async (t) => {
+test('that repoll fires the internal constructor function', async (t) => {
   const fn = 'stub';
   const fnInterval = 500;
   const repollIntervals = {
     [fn]: fnInterval
   };
-  const options = {
-    autoStart: true
+
+  let firedOnConstruction = false;
+
+  @repoll(repollIntervals)
+  class Foo extends Component {
+    constructor(...args) {
+      super(...args);
+
+      firedOnConstruction = true;
+    }
+
+    stub = sinon.stub();
+
+    render() {
+      return (
+        <div>
+          Should not throw
+        </div>
+      )
+    }
+  }
+
+  const wrapper = await mount(<Foo/>);
+
+  t.true(firedOnConstruction);
+
+  wrapper.unmount();
+});
+
+test('that repoll\'s constructor function is fired on mount', async (t) => {
+  const fn = 'stub';
+  const fnInterval = 500;
+  const repollIntervals = {
+    [fn]: fnInterval
   };
 
   let firedOnUnmount = false;
 
-  @repoll(repollIntervals, options)
+  @repoll(repollIntervals)
   class Foo extends Component {
     componentWillUnmount() {
       firedOnUnmount = true;

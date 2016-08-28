@@ -85,18 +85,24 @@ const DEFAULT_OPTIONS = {
  * @returns {function(React.Component): React.Component}
  */
 const repoll = (functionMap, options = {}) => {
+  let hasError = false;
+
   if (isReactComponent(functionMap)) {
     throwTypeError('Cannot decorate the provided React class directly, you must use repoll as a method passing an' +
       'object of key: value pairs being functionName: polling interval.');
 
-    return returnSameClass;
+    hasError = true;
   } else if (!isObject(functionMap)) {
     throwTypeError('You must pass in an object with key: value pairs being functionName: polling interval.');
 
-    return returnSameClass;
+    hasError = true;
   } else if (!isObject(options)) {
     throwTypeError('Options passed must be an object.');
 
+    hasError = true;
+  }
+
+  if (hasError) {
     return returnSameClass;
   }
   
@@ -109,12 +115,16 @@ const repoll = (functionMap, options = {}) => {
     if (!isReactComponent(ReactClass)) {
       typeErrorWithConsole('Decorated function must be a ReactClass: functional components are not supported at this time.');
 
-      return returnSameClass;
+      return ReactClass;
     }
 
     class RepollComponent extends ReactClass {
       constructor(...args) {
         super(...args);
+
+        if (isFunction(super.constructor)) {
+          super.constructor(...args);
+        }
 
         this.repollIntervals = {};
 
