@@ -53,7 +53,18 @@ In the above example, the `foo` function will be called every 5 seconds starting
 
 #### Injected values
 
-When the class is decorated, an instance value of `repollIntervals` is injected into the class, which houses all of the intervals applied via `repoll`.
+When the class is decorated, an instance value of `repollIntervals` is injected into the class, which houses all of the intervals applied via `repoll`. `repollIntervals` is an object whose properties are each objects themselves reflecting a specific interval:
+
+```
+{
+  interval: Number,
+  name: String,
+  start: Function,
+  stop: Function
+}
+```
+
+The interval and the name are just metadata; `name` is the name of the function, whereas `interval` is the ID of the interval created internally by `setInterval`. The `start` and `stop` functions will respectively start and stop the polling of the function.
 
 ```javascript
 const pollingFunctions = {
@@ -70,6 +81,37 @@ class MyComponent extends Component {
     console.log(this.repollIntervals);
     // {foo: {interval: 0, name: 'foo', start: [Function], stop: [Function]}}
     
+    return (
+      <div>
+        Stuffz
+      </div>
+    );
+  }
+}
+```
+
+Additionally, the functions that are wired for polling will have the interval injected into it:
+
+```javascript
+const pollingFunctions = {
+  foo: 500
+};
+
+@repoll(pollingFunctions)
+class MyComponent extends Component {
+  counter = 0;
+
+  foo = (fooInterval) => {
+    if (this.counter === 3) {
+      console.log('Fired thrice prior, preventing any more calls.');
+      
+      fooInterval.stop();
+    }
+    
+    this.counter++;
+  };
+  
+  render() {
     return (
       <div>
         Stuffz
@@ -184,6 +226,10 @@ class MyComponent extends Component {
   }
 }
 ```
+
+#### Advanced usage
+
+There are a number of ways you can work with this polling information, but it all un
 
 ### Development
 
