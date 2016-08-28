@@ -4,7 +4,11 @@ Automate polling in your React components
 
 #### Table of contents
 
-
+* [Installation](#installation)
+* [Usage](#usage)
+* [Injected values](#injected-values)
+* [Parameters](#parameters)
+* [Development](#development)
 
 #### Installation
 
