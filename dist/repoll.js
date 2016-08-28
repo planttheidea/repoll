@@ -126,7 +126,7 @@ var Repoll =
 	    }
 	
 	    intervalMetadata.interval = setInterval(function () {
-	      fn(intervalMetadata, intervalMap);
+	      fn(intervalMetadata);
 	    }, timeInMs);
 	  };
 	
