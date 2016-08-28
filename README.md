@@ -86,6 +86,8 @@ class MyComponent extends Component {
 }
 ```
 
+You do should not need to make use of it unless you are applying advanced usages.
+
 Additionally, the functions that are wired for polling will have the interval injected into it:
 
 ```javascript
@@ -116,8 +118,6 @@ class MyComponent extends Component {
   }
 }
 ```
-
-You do should not need to make use of it unless you are applying advanced usages.
 
 #### Parameters
 
