@@ -164,3 +164,43 @@ test('if repoll with two arguments creates intervals and starts them', async (t)
 
   wrapper.unmount();
 });
+
+test('that repoll does not continue firing after unmount', async (t) => {
+  const fn = 'stub';
+  const fnInterval = 500;
+  const repollIntervals = {
+    [fn]: fnInterval
+  };
+  const options = {
+    autoStart: true
+  };
+
+  let firedOnUnmount = false;
+
+  @repoll(repollIntervals, options)
+  class Foo extends Component {
+    componentWillUnmount() {
+      firedOnUnmount = true;
+    }
+
+    stub = sinon.stub();
+
+    render() {
+      return (
+        <div>
+          Should not throw
+        </div>
+      )
+    }
+  }
+
+  const wrapper = await mount(<Foo/>);
+
+  wrapper.unmount();
+
+  await sleep(1000); // enough time for the interval to fire once if still active
+
+  t.true(firedOnUnmount);
+  t.true(wrapper.node.stub.notCalled);
+  t.deepEqual(wrapper.node.repollIntervals, {});
+});

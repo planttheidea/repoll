@@ -213,6 +213,18 @@ var Repoll =
 	        return _this;
 	      }
 	
+	      RepollComponent.prototype.componentWillUnmount = function componentWillUnmount() {
+	        if ((0, _is.isFunction)(_ReactClass.prototype.componentWillUnmount)) {
+	          _ReactClass.prototype.componentWillUnmount.call(this);
+	        }
+	
+	        for (var key in this.repollIntervals) {
+	          this.repollIntervals[key].stop();
+	        }
+	
+	        this.repollIntervals = {};
+	      };
+	
 	      RepollComponent.prototype.render = function render() {
 	        return _ReactClass.prototype.render.call(this);
 	      };

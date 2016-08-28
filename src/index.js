@@ -137,6 +137,18 @@ const repoll = (functionMap, options = {}) => {
         }
       }
 
+      componentWillUnmount() {
+        if (isFunction(super.componentWillUnmount)) {
+          super.componentWillUnmount();
+        }
+
+        for (let key in this.repollIntervals) {
+          this.repollIntervals[key].stop();
+        }
+
+        this.repollIntervals = {};
+      }
+
       repollIntervals = {};
 
       render() {
