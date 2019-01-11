@@ -2,78 +2,44 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  cache: true,
+  devtool: '#source-map',
 
-  debug: true,
+  entry: [path.resolve(__dirname, 'src', 'index.js')],
 
-  devtool: 'source-map',
+  externals: ['react'],
 
-  entry: [
-    path.resolve(__dirname, 'src', 'index.js')
-  ],
-
-  eslint: {
-    configFile: '.eslintrc',
-    emitError: true,
-    failOnError: true,
-    failOnWarning: false,
-    formatter: require('eslint-friendly-formatter')
-  },
-
-  externals: {
-    'react': {
-      amd: 'react',
-      commonjs: 'react',
-      commonjs2: 'react',
-      root: 'React'
-    }
-  },
+  mode: 'development',
 
   module: {
-    preLoaders: [
+    rules: [
       {
-        include: [
-          path.resolve(__dirname, 'src')
-        ],
+        enforce: 'pre',
+        include: [path.resolve(__dirname, 'src')],
         loader: 'eslint-loader',
-        test: /\.js$/
-      }
-    ],
-
-    loaders: [
+        options: {
+          configFile: '.eslintrc',
+          emitError: true,
+          failOnError: true,
+          failOnWarning: false,
+          formatter: require('eslint-friendly-formatter'),
+        },
+        test: /\.js$/,
+      },
       {
-        include: [
-          path.resolve(__dirname, 'src')
-        ],
-        loader: 'babel',
-        test: /\.js$/
-      }
-    ]
+        include: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'DEV_ONLY')],
+        loader: 'babel-loader',
+        test: /\.js$/,
+      },
+    ],
   },
 
   output: {
     filename: 'repoll.js',
     library: 'Repoll',
+    libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist'),
-    umdNamedDefine: true
+    umdNamedDefine: true,
   },
 
-  plugins: [
-    new webpack.EnvironmentPlugin([
-      'NODE_ENV'
-    ])
-  ],
-
-  resolve: {
-    extensions: [
-      '',
-      '.js'
-    ],
-
-    fallback: [
-      path.join(__dirname, 'src')
-    ],
-
-    root: __dirname
-  }
+  plugins: [new webpack.EnvironmentPlugin(['NODE_ENV'])],
 };

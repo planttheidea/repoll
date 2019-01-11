@@ -1,11 +1,4 @@
 {
-    "plugins":[
-        "transform-decorators-legacy",
-        "add-module-exports"
-    ],
-    "presets":[
-        "es2015-loose",
-        "react",
-        "stage-0"
-    ]
+  "plugins": ["transform-decorators-legacy", "add-module-exports"],
+  "presets": [["env", { "loose": true }], "react", "stage-2"]
 }
