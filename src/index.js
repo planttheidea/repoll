@@ -1,13 +1,10 @@
-// external dependencies
-import React from 'react';
-
 // object class checkers
 import {
   isFunction,
   isNull,
   isNumber,
   isObject,
-  isReactComponent
+  isReactComponent,
 } from './is';
 
 /* eslint-disable no-console */
@@ -30,7 +27,7 @@ const typeErrorFallback = (message) => {
   throw new TypeError(message);
 };
 
-const throwTypeError = (window.console && window.console.error) ? typeErrorWithConsole : typeErrorFallback;
+const throwTypeError = window.console && window.console.error ? typeErrorWithConsole : typeErrorFallback;
 
 /* eslint-enable */
 
@@ -46,7 +43,7 @@ const throwTypeError = (window.console && window.console.error) ? typeErrorWithC
 const setRepollIntervalData = (intervalMap, key, timeInMs, fn) => {
   let intervalMetadata = {
     interval: null,
-    name: key
+    name: key,
   };
 
   intervalMetadata.stop = () => {
@@ -73,13 +70,11 @@ const setRepollIntervalData = (intervalMap, key, timeInMs, fn) => {
  * @param {Component} ReactClass
  * @returns {Component}
  */
-const returnSameClass = (ReactClass) => {
-  return ReactClass;
-};
+const returnSameClass = (ReactClass) => ReactClass;
 
 const DEFAULT_OPTIONS = {
   autoStart: true,
-  stopOnUnmount: true
+  stopOnUnmount: true,
 };
 
 /**
@@ -93,8 +88,10 @@ const repoll = (functionMap, options = {}) => {
   let hasError = false;
 
   if (isReactComponent(functionMap)) {
-    throwTypeError('Cannot decorate the provided React class directly, you must use repoll as a method passing an' +
-      'object of key: value pairs being functionName: polling interval.');
+    throwTypeError(
+      'Cannot decorate the provided React class directly, you must use repoll as a method passing an' +
+        'object of key: value pairs being functionName: polling interval.'
+    );
 
     hasError = true;
   } else if (!isObject(functionMap)) {
@@ -110,15 +107,17 @@ const repoll = (functionMap, options = {}) => {
   if (hasError) {
     return returnSameClass;
   }
-  
+
   const coalescedOptions = {
     ...DEFAULT_OPTIONS,
-    ...options
+    ...options,
   };
 
   return (ReactClass) => {
     if (!isReactComponent(ReactClass)) {
-      typeErrorWithConsole('Decorated function must be a ReactClass: functional components are not supported at this time.');
+      typeErrorWithConsole(
+        'Decorated function must be a ReactClass: functional components are not supported at this time.'
+      );
 
       return ReactClass;
     }
@@ -141,9 +140,8 @@ const repoll = (functionMap, options = {}) => {
           }
 
           if (isFunction(this[key])) {
-            this.repollIntervals[key] = setRepollIntervalData(this.repollIntervals, key, 
-              intervalTimeInMs, this[key]);
-            
+            this.repollIntervals[key] = setRepollIntervalData(this.repollIntervals, key, intervalTimeInMs, this[key]);
+
             if (coalescedOptions.autoStart) {
               this.repollIntervals[key].start();
             }

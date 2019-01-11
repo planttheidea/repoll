@@ -1,7 +1,5 @@
 // external dependencies
-import {
-  Component
-} from 'react';
+import {Component} from 'react';
 
 /**
  * get the object class of the object passed
@@ -9,9 +7,7 @@ import {
  * @param {*} object
  * @returns {string}
  */
-const toString = (object) => {
-  return Object.prototype.toString.call(object);
-};
+const {toString} = Object.prototype;
 
 /**
  * determine whether object passed is a function
@@ -19,9 +15,7 @@ const toString = (object) => {
  * @param {*} object
  * @returns {boolean}
  */
-const isFunction = (object) => {
-  return toString(object) === '[object Function]' || typeof object === 'function';
-};
+const isFunction = (object) => typeof object === 'function';
 
 /**
  * determine whether object passed is a number
@@ -29,9 +23,7 @@ const isFunction = (object) => {
  * @param {*} object
  * @returns {boolean}
  */
-const isNumber = (object) => {
-  return toString(object) === '[object Number]' && object === object;
-};
+const isNumber = (object) => typeof object === 'number' && object === object;
 
 /**
  * determine whether object passed is null
@@ -39,9 +31,7 @@ const isNumber = (object) => {
  * @param {*} object
  * @returns {boolean}
  */
-const isNull = (object) => {
-  return object === null;
-};
+const isNull = (object) => object === null;
 
 /**
  * determine whether object passed is an object
@@ -49,9 +39,7 @@ const isNull = (object) => {
  * @param {*} object
  * @returns {boolean}
  */
-const isObject = (object) => {
-  return !!object && toString(object) === '[object Object]';
-};
+const isObject = (object) => !!object && toString.call(object) === '[object Object]';
 
 /**
  * determine whether object passed is a ReactComponent
@@ -59,9 +47,7 @@ const isObject = (object) => {
  * @param {*} object
  * @returns {boolean}
  */
-const isReactComponent = (object) => {
-  return Component.isPrototypeOf(object);
-};
+const isReactComponent = (object) => Component.isPrototypeOf(object);
 
 export {isFunction};
 export {isNull};
